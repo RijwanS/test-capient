@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
  
 const Todo = props => {
-    const [state, setState] = useState({});    
+    const [state, setState] = useState({}); 
     const handleChange = (evt) => {
+ 
         const value = evt.target.value;
           if(evt.target.checked){
             setState({
@@ -11,27 +12,37 @@ const Todo = props => {
               });
         }else{
            delete state[evt.target.name];   
-        }
+        }      
       }
 
       const dataHandler = (evt) => {
-          console.log(state);
-          evt.preventDefault()
+          let myobj = {}
+           const form = evt.target;
+           const data = new FormData(form);
+           let i =1;
+       
+           for(let testing of form){
+               if(!myobj[testing.getAttribute('targeting')]){
+                   myobj.[testing.getAttribute('targeting')] = {}
+                   i=1;
+               }
+               if(testing.checked){
+                myobj[testing.getAttribute('targeting')][i] = testing.getAttribute('name');
+                i++
+            }
+           }
+           console.log(myobj); 
+          evt.preventDefault();
       }
       
-      function buttonClicked(index) {  
-        return function() {
-          index.click();
-        }
-      }
-      
-      const selectallvalue = () => {
-        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const selectallvalue = (evt) => {
+        console.log(evt.target.getAttribute('targeting'));
+        var checkboxes = document.querySelectorAll('input[targeting="'+ evt.target.getAttribute('targeting') +'"]');
         for (let i = 0; i < checkboxes.length; i++) {
-            
-            buttonClicked(checkboxes[i]);
-            
-                
+          if(!checkboxes[i].checked && evt.target.checked)
+            checkboxes[i].click(); 
+            else if(checkboxes[i].checked && !evt.target.checked)
+             checkboxes[i].click(); 
         }
       }
 
@@ -41,31 +52,41 @@ const Todo = props => {
     <form onSubmit={dataHandler}>
       
     <div className="col-1">
-    <label> Hollywood
+    <label><input
+          type="checkbox"
+          name="Honey Boy"
+          value={2020}
+          id="amazonPrime"
+          targeting="amazonPrime"
+          onChange={selectallvalue}
+        /> Amazon Prime
     </label>
       
     <label>
         <input
           type="checkbox"
-          name="Avengers: Endgame"
+          name="Honey Boy"
+          targeting="amazonPrime"
           value={2020}
           onChange={handleChange}
         />
-        Avengers: Endgame
+        Honey Boy
       </label>
       <label>
         <input
           type="checkbox"
-          name="Black Panther"
+          name="Jurassic Park"
+          targeting="amazonPrime"
           value={2018}
           onChange={handleChange}
         />
-        Black Panther
+        Jurassic Park
       </label>
       <label>
         <input
           type="checkbox"
           name="Dolittle"
+          targeting="amazonPrime"
           value={2020}
           onChange={handleChange}
         />
@@ -75,6 +96,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="Wonder Woman"
+          targeting="amazonPrime"
           value={2018}
           onChange={handleChange}
         />
@@ -84,6 +106,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="The Matrix"
+          targeting="amazonPrime"
           value={2018}
           onChange={handleChange}
         />
@@ -93,6 +116,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="Forrest Gump"
+          targeting="amazonPrime"
           value={2018}
           onChange={handleChange}
         />
@@ -102,6 +126,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="Gladiator"
+          targeting="amazonPrime"
           value={2018}
           onChange={handleChange}
         />
@@ -110,13 +135,20 @@ const Todo = props => {
       </div>
      
       <div className="col-1">
-    <label> Bollywood
+    <label> <input
+          type="checkbox"
+          name="Tanhaji"
+          targeting="Hotstar"
+          value={2020}
+          onChange={selectallvalue}
+        />Hotstar
     </label>
       
     <label>
         <input
           type="checkbox"
           name="Tanhaji"
+          targeting="Hotstar"
           value={2020}
           onChange={handleChange}
         />
@@ -126,6 +158,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="New York"
+          targeting="Hotstar"
           value={2009}
           onChange={handleChange}
         />
@@ -135,6 +168,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="Bajirao Mastani"
+          targeting="Hotstar"
           value={2015}
           onChange={handleChange}
         />
@@ -144,6 +178,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="Angrezi Medium"
+          targeting="Hotstar"
           value={2020}
           onChange={handleChange}
         />
@@ -153,6 +188,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="Agent Vinod"
+          targeting="Hotstar"
           value={2012}
           onChange={handleChange}
         />
@@ -162,6 +198,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="Dulhe Raja"
+          targeting="Hotstar"
           value={1998}
           onChange={handleChange}
         />
@@ -171,6 +208,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="Omkara"
+          targeting="Hotstar"
           value={2006}
           onChange={handleChange}
         />
@@ -179,13 +217,20 @@ const Todo = props => {
       </div>
      
       <div className="col-1">
-    <label> Netflix
+    <label><input
+          type="checkbox"
+          name="Tanhaji"
+          targeting="Netflix"
+          value={2020}
+          onChange={selectallvalue}
+        /> Netflix
     </label>
       
     <label>
         <input
           type="checkbox"
           name="Breaking Bad"
+          targeting="Netflix"
           value={2008}
           onChange={handleChange}
         />
@@ -195,6 +240,7 @@ const Todo = props => {
         <input
           type="checkbox"
           name="The Punisher"
+          targeting="Netflix"
           value={2017}
           onChange={handleChange}
         />
@@ -203,6 +249,7 @@ const Todo = props => {
       <label>
         <input
           type="checkbox"
+          targeting="Netflix"
           name="Titans"
           value={2018}
           onChange={handleChange}
@@ -212,6 +259,7 @@ const Todo = props => {
       <label>
         <input
           type="checkbox"
+          targeting="Netflix"
           name="Chhota Bheem"
           value={2008}
           onChange={handleChange}
@@ -221,6 +269,7 @@ const Todo = props => {
       <label>
         <input
           type="checkbox"
+          targeting="Netflix"
           name="Sense8"
           value={2015}
           onChange={handleChange}
@@ -230,6 +279,7 @@ const Todo = props => {
       <label>
         <input
           type="checkbox"
+          targeting="Netflix"
           name="Glee"
           value={2009}
           onChange={handleChange}
@@ -239,6 +289,7 @@ const Todo = props => {
       <label>
         <input
           type="checkbox"
+          targeting="Netflix"
           name="V Wars"
           value={2009}
           onChange={handleChange}
